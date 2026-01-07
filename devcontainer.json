@@ -1,0 +1,36 @@
+{
+  "name": "ROS Noetic + RealSense (X11, USB)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "runArgs": [
+    "--privileged",
+    "--device=/dev/bus/usb:/dev/bus/usb",
+    "--net=host",
+    "-e", "DISPLAY",
+    "-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+    // 如需硬件加速，取消下一行注释（宿主安装了 NVIDIA 驱动 + nvidia-container-toolkit）
+    // "--gpus=all",
+    // 如需更稳定的 mesa 渲染，挂载 /dev/dri（非必须）
+    "--device=/dev/dri:/dev/dri",
+    "-v", "/dev:/dev"
+  ],
+  "containerUser": "root",
+  "remoteEnv": {
+    "ROS_DISTRO": "noetic"
+  },
+  "postCreateCommand": "bash /opt/setup_devcontainer_post.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-iot.vscode-ros",
+        "twxs.cmake",
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
